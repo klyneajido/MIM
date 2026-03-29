@@ -3,7 +3,7 @@ import "./globals.css";
 import { Roboto } from "next/font/google";
 
 export const metadata: Metadata = {
-  title: "Mim",
+  title: "mim",
   description: "Search and copy reaction memes fast.",
 };
 
