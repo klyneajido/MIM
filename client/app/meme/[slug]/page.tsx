@@ -1,7 +1,6 @@
 // client/app/meme/[slug]/page.tsx
 import React from "react";
 import { notFound } from "next/navigation";
-import { Meme } from "@/types/meme";
 import { getMemes } from "@/lib/getMemes";
 interface Props {
   params: { slug: string };

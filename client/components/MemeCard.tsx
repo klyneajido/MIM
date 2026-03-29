@@ -9,12 +9,27 @@ import { useState } from "react";
 export default function MemeCard({ meme }: { meme: Meme }) {
   const [doneCopying, setDoneCopying] = useState(false);
 
-  const copyImage = async () => {
-    try {
+const copyImage = async () => {
+  try {
+    const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+    if (isMobile) {
+      // Mobile: download the image
+      const link = document.createElement("a");
+      link.href = meme.image;
+      link.download = meme.title || "image.png";
+      link.click();
+      alert("Image downloaded. You can now view it in your gallery.");
+    } else {
+      // Desktop: copy to clipboard
+      if (!navigator.clipboard || !(window as any).ClipboardItem) {
+        alert("Clipboard API not supported on this browser.");
+        return;
+      }
+
       const img = document.createElement("img") as HTMLImageElement;
       img.crossOrigin = "anonymous";
       img.src = meme.image;
-
       await img.decode();
 
       const canvas = document.createElement("canvas");
@@ -24,23 +39,20 @@ export default function MemeCard({ meme }: { meme: Meme }) {
       ctx.drawImage(img, 0, 0);
 
       const blob = await new Promise<Blob | null>((resolve) =>
-        canvas.toBlob((b) => resolve(b), "image/png"),
+        canvas.toBlob((b) => resolve(b), "image/png")
       );
       if (!blob) throw new Error("Failed to convert image");
 
-      await navigator.clipboard.write([
-        new ClipboardItem({ "image/png": blob }),
-      ]);
-
-      console.log("Image copied to clipboard");
-    } catch (err) {
-      console.error(err);
-      alert("Failed to copy image. (JPEG not supported in some browsers)");
-    } finally {
-      setDoneCopying(true);
+      await navigator.clipboard.write([new ClipboardItem({ "image/png": blob })]);
+      alert("Image copied to clipboard!");
     }
-  };
-
+  } catch (err) {
+    console.error(err);
+    alert("Failed to copy/download image. Try long-pressing on mobile.");
+  } finally {
+    setDoneCopying(true);
+  }
+};
   return (
     <Card className="relative rounded h-full overflow-hidden border-zinc-800 bg-zinc-900 group transition-all duration-300 hover:border-orange-500/50 hover:shadow-[0_0_20px_rgba(249,115,22,0.1)]">
       <div className="relative aspect-4/5 overflow-hidden bg-zinc-900">
