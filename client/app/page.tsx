@@ -28,7 +28,7 @@ export default function HomePage() {
           <div className="max-w-3xl space-y-3">
             <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">Search a meme. Copy the vibe. Reply instantly.</h1>
             <p className="text-base text-zinc-400 sm:text-lg">
-              Find reaction memes fast for coding, Filipino humor, awkward replies, and passive aggressive energy.
+              Find reaction meme
             </p>
           </div>
         </div>
