@@ -44,7 +44,6 @@ const copyImage = async () => {
       if (!blob) throw new Error("Failed to convert image");
 
       await navigator.clipboard.write([new ClipboardItem({ "image/png": blob })]);
-      alert("Image copied to clipboard!");
     }
   } catch (err) {
     console.error(err);
