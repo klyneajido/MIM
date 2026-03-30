@@ -2,10 +2,10 @@
 
 import Image from "next/image";
 import { Meme } from "@/types/meme";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
-import Link from "next/link";
+import { Copy, Check } from "@phosphor-icons/react"; 
 
 interface MemeCardProps {
   meme: Meme;
@@ -13,88 +13,80 @@ interface MemeCardProps {
 }
 
 export default function MemeCard({ meme, onOpen }: MemeCardProps) {
-  const [doneCopying, setDoneCopying] = useState(false);
+  const [isCopying, setIsCopying] = useState(false);
 
-  const copyImage = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  const copyImageToClipboard = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
+
     try {
-      const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(
-        navigator.userAgent,
-      );
+      const img = document.createElement("img");
+      img.crossOrigin = "anonymous";
+      img.src = meme.image;
+      await img.decode();
 
-      if (isMobile) {
-        // Mobile: download the image
-        const link = document.createElement("a");
-        link.href = meme.image;
-        link.download = meme.title || "image.png";
-        link.click();
-        alert("Image downloaded. You can now view it in your gallery.");
-      } else {
-        // Desktop: copy to clipboard
-        if (!navigator.clipboard || !(window as any).ClipboardItem) {
-          alert("Clipboard API not supported on this browser.");
-          return;
-        }
+      const canvas = document.createElement("canvas");
+      canvas.width = img.width;
+      canvas.height = img.height;
+      const ctx = canvas.getContext("2d")!;
+      ctx.drawImage(img, 0, 0);
 
-        const img = document.createElement("img") as HTMLImageElement;
-        img.crossOrigin = "anonymous";
-        img.src = meme.image;
-        await img.decode();
+      canvas.toBlob(async (blob) => {
+        if (!blob) return;
+        const item = new ClipboardItem({ "image/png": blob });
+        await navigator.clipboard.write([item]);
+        
+        setIsCopying(true);
+        setTimeout(() => setIsCopying(false), 2000); 
+      }, "image/png");
 
-        const canvas = document.createElement("canvas");
-        canvas.width = img.width;
-        canvas.height = img.height;
-        const ctx = canvas.getContext("2d")!;
-        ctx.drawImage(img, 0, 0);
-
-        const blob = await new Promise<Blob | null>((resolve) =>
-          canvas.toBlob((b) => resolve(b), "image/png"),
-        );
-        if (!blob) throw new Error("Failed to convert image");
-
-        await navigator.clipboard.write([
-          new ClipboardItem({ "image/png": blob }),
-        ]);
-      }
     } catch (err) {
-      console.error(err);
-      alert("Failed to copy/download image. Try long-pressing on mobile.");
-    } finally {
-      setDoneCopying(true);
+      console.error("Failed to copy:", err);
     }
   };
+
   return (
     <Card
       onClick={() => onOpen(meme)}
-      className="relative rounded h-full overflow-hidden border-zinc-800 bg-zinc-900 group transition-all duration-300 hover:border-orange-500/50 hover:shadow-[0_0_20px_rgba(249,115,22,0.1)]"
+      className="group relative h-full overflow-hidden border-zinc-800 bg-zinc-900 transition-all duration-300 hover:border-orange-500/50 hover:shadow-[0_0_20px_rgba(249,115,22,0.1)] cursor-pointer"
     >
       <div className="relative aspect-4/5 overflow-hidden bg-zinc-900">
         <Image
           src={meme.image}
           alt={meme.title}
           fill
-          className="object-cover transition duration-500 group-hover:scale-100"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          className="object-cover transition duration-500 group-hover:scale-105"
         />
+
         <div className="absolute left-3 top-3 z-10">
-          <Badge className="border-white/10 bg-black/60 text-white backdrop-blur-md hover:bg-black/80">
+          <Badge className="border-white/10 bg-black/40 text-xs font-medium text-white backdrop-blur-md hover:bg-black/60">
             {meme.category}
           </Badge>
         </div>
-
-        <button
-          onClick={copyImage}
-          disabled={doneCopying}
-          className={`absolute inset-0 z-20 m-auto h-10 w-50 rounded-2xl bg-orange-500/30 text-white text-sm font-semibold backdrop-blur-md 
-                      flex items-center justify-center 
-                      opacity-0 scale-90 transition-all duration-300 
-                      group-hover:opacity-100 group-hover:scale-100
-                      ${doneCopying ? "opacity-100 scale-100" : ""}`}
-        >
-          {doneCopying ? "Copied" : "Copy Image"}
-        </button>
-
-        <div className="absolute inset-0 bg-linear-to-t from-zinc-950 via-transparent to-transparent opacity-60" />
+        <div className="absolute inset-0 z-20 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+          <button
+            onClick={copyImageToClipboard}
+            className={`flex items-center gap-2 rounded-full px-6 py-2.5 text-sm font-bold tracking-wide transition-all duration-200 
+              ${isCopying 
+                ? "bg-orange-500 text-white" 
+                : "bg-white text-black hover:scale-105 active:scale-95"
+              } shadow-xl`}
+          >
+            {isCopying ? (
+              <>
+                <Check weight="bold" size={16} />
+                Copied
+              </>
+            ) : (
+              <>
+                <Copy weight="bold" size={16} />
+                Copy Image
+              </>
+            )}
+          </button>
+        </div>
+        <div className="absolute inset-0 bg-linear-to-t from-black/80 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
       </div>
     </Card>
   );
