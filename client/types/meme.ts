@@ -3,7 +3,6 @@ export type Meme = {
     title: string;
     slug: string;
     image: string;
-    caption: string;
     tags: string[];
     category: string;
     keywords: string[];

@@ -6,7 +6,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export const categories = ["All", "Reaction", "Coding", "Filipino"];  
+export const categories = ["All", "Uncategorized"];  
 
 export function filterMemes(memes: Meme[], search: string, category: string) {
   const query = search.trim().toLowerCase();
@@ -16,7 +16,6 @@ export function filterMemes(memes: Meme[], search: string, category: string) {
 
    const haystack = [
       meme.title,
-      meme.caption,
       meme.category,
       meme.keywords,
       meme.tags.join(" "),
@@ -27,7 +26,5 @@ export function filterMemes(memes: Meme[], search: string, category: string) {
        const matchesSearch = !query || haystack.includes(query);
        return matchesCategory && matchesSearch;
   });
-
- 
-
 }
+
