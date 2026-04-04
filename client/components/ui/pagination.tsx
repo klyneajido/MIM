@@ -74,7 +74,6 @@ function PaginationPrevious({
       {...props}
     >
       <CaretLeftIcon data-icon="inline-start" />
-      <span className="hidden sm:block">{text}</span>
     </PaginationLink>
   )
 }
@@ -91,7 +90,7 @@ function PaginationNext({
       className={cn("pr-1.5!", className)}
       {...props}
     >
-      <span className="hidden sm:block">{text}</span>
+
       <CaretRightIcon data-icon="inline-end" />
     </PaginationLink>
   )

@@ -34,38 +34,38 @@ export default function MemeGrid({ memes }: MemeGridProps) {
   const [selectedMeme, setSelectedMeme] = useState<Meme | null>(null);
   const [isOpen, setIsOpen] = useState(false);
 
-const [isDownloading, setIsDownloading] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
 
-const handleDownload = async (imageUrl: string, fileName: string) => {
-  try {
-    const response = await fetch(imageUrl);
-    const blob = await response.blob();
-    const url = window.URL.createObjectURL(blob);
-    
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = fileName || "download.png";
-    
-    document.body.appendChild(link);
-    link.click();
-    
-    // Cleanup
-    document.body.removeChild(link);
-    window.URL.revokeObjectURL(url);
-  } catch (error) {
-    console.error("Download failed:", error);
-  }
-};
-const onDownloadClick = async () => {
-  if (!selectedMeme) return;
-  
-  setIsDownloading(true);
-  await handleDownload(
-    selectedMeme.image, 
-    `meme-${selectedMeme.category}-${Date.now()}.png`
-  );
-  setIsDownloading(false);
-};
+  const handleDownload = async (imageUrl: string, fileName: string) => {
+    try {
+      const response = await fetch(imageUrl);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = fileName || "download.png";
+
+      document.body.appendChild(link);
+      link.click();
+
+      // Cleanup
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Download failed:", error);
+    }
+  };
+  const onDownloadClick = async () => {
+    if (!selectedMeme) return;
+
+    setIsDownloading(true);
+    await handleDownload(
+      selectedMeme.image,
+      `meme-${selectedMeme.category}-${Date.now()}.png`,
+    );
+    setIsDownloading(false);
+  };
 
   if (!memes.length) {
     return (
@@ -79,6 +79,44 @@ const onDownloadClick = async () => {
 
   return (
     <div className="space-y-8">
+      <Pagination>
+        <PaginationContent>
+          <PaginationItem>
+            <PaginationPrevious
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                if (currentPage > 1) setCurrentPage(currentPage - 1);
+              }}
+            />
+          </PaginationItem>
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+            <PaginationItem key={page}>
+              <PaginationLink
+                href="#"
+                isActive={currentPage === page}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setCurrentPage(page);
+                }}
+              >
+                {page}
+              </PaginationLink>
+            </PaginationItem>
+          ))}
+
+          <PaginationItem>
+            <PaginationNext
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+              }}
+            />
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>
+      
       <div className="grid auto-rows-fr grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {currentItems.map((meme) => (
           <div key={meme.id} className="h-fit">
@@ -190,7 +228,10 @@ const onDownloadClick = async () => {
                 </div>
 
                 <div className="mt-auto pt-6">
-                  <Button onClick={onDownloadClick}className="w-full bg-white text-black hover:bg-zinc-200 h-9 text-sm">
+                  <Button
+                    onClick={onDownloadClick}
+                    className="w-full bg-white text-black hover:bg-zinc-200 h-9 text-sm"
+                  >
                     Download Image
                   </Button>
                 </div>

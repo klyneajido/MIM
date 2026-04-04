@@ -78,7 +78,7 @@ export default function MemeCard({ meme, onOpen }: MemeCardProps) {
                 <Check weight="bold" size={16} />
                 Copied
               </>
-            ) : (
+            ) : ( 
               <>
                 <Copy weight="bold" size={16} />
                 Copy Image
