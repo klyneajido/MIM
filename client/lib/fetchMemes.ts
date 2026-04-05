@@ -1,4 +1,5 @@
 
+
 import { Meme } from "@/types/meme";
 import { getSupabaseClient } from "./supabase";
 export async function fetchMemes(): Promise<Meme[]> {
