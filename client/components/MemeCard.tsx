@@ -48,10 +48,11 @@ export default function MemeCard({ meme, onOpen }: MemeCardProps) {
   return (
     <Card
       onClick={() => onOpen(meme)}
-      className="group relative h-full overflow-hidden border-zinc-800 bg-zinc-900 transition-all duration-300 hover:border-orange-500/50 hover:shadow-[0_0_20px_rgba(249,115,22,0.1)] cursor-pointer"
+      className="group relative h-full rounded-sm overflow-hidden border-zinc-800 bg-zinc-900 transition-all duration-300 hover:border-orange-500/50 hover:shadow-[0_0_20px_rgba(249,115,22,0.1)] cursor-pointer"
     >
       <div className="relative aspect-4/5 overflow-hidden bg-zinc-900">
         <Image
+          loading="lazy" 
           src={meme.image}
           alt={meme.category}
           fill
@@ -60,7 +61,7 @@ export default function MemeCard({ meme, onOpen }: MemeCardProps) {
         />
 
         <div className="absolute left-3 top-3 z-10">
-          <Badge className="border-white/10 bg-black/40 text-xs font-medium text-white backdrop-blur-md hover:bg-black/60">
+          <Badge className="border-white/10 bg-black/40 text-xs font-medium text-white backdrop-blur-md hover:bg-black/60 rounded">
             {meme.category}
           </Badge>
         </div>

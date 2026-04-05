@@ -49,7 +49,7 @@ function PaginationLink({
       asChild
       variant={isActive ? "default" : "ghost"}
       size={size}
-      className={cn(className)}
+      className={cn("rounded",className)}
     >
       <a
         aria-current={isActive ? "page" : undefined}
@@ -70,7 +70,7 @@ function PaginationPrevious({
     <PaginationLink
       aria-label="Go to previous page"
       size="default"
-      className={cn("pl-1.5!", className)}
+      className={cn("pl-1.5! rounded", className)}
       {...props}
     >
       <CaretLeftIcon data-icon="inline-start" />
@@ -87,7 +87,7 @@ function PaginationNext({
     <PaginationLink
       aria-label="Go to next page"
       size="default"
-      className={cn("pr-1.5!", className)}
+      className={cn("pr-1.5! rounded", className)}
       {...props}
     >
 

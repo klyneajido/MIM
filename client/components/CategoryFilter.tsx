@@ -14,7 +14,7 @@ export default function CategoryFilter({ categories, active, onChange }: Props) 
       {categories.map((category) => {
         const isActive = active === category;
         return (
-          <Button key={category} onClick={() => onChange(category)} variant={isActive ? "default" : "secondary"} size="sm">
+          <Button className="rounded" key={category} onClick={() => onChange(category)} variant={isActive ? "default" : "secondary"} size="sm">
             {category}
           </Button>
         );
