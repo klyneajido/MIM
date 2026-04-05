@@ -6,7 +6,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export const categories = ["All", "Uncategorized"];  
+export const categories = ["All", "Happy", "Sad", "Angry", "Disappointed", "Freaky", "Uncategorized"];  
 
 export function filterMemes(memes: Meme[], search: string, category: string) {
   const query = search.trim().toLowerCase();
@@ -15,9 +15,7 @@ export function filterMemes(memes: Meme[], search: string, category: string) {
     const matchesCategory = category === "All" || meme.category === category;
 
    const haystack = [
-      meme.title,
       meme.category,
-      meme.keywords,
       meme.tags.join(" "),
     ]
       .join(" ")

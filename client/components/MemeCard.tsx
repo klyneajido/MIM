@@ -53,7 +53,7 @@ export default function MemeCard({ meme, onOpen }: MemeCardProps) {
       <div className="relative aspect-4/5 overflow-hidden bg-zinc-900">
         <Image
           src={meme.image}
-          alt={meme.title}
+          alt={meme.category}
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           className="object-cover transition duration-500 group-hover:scale-105"

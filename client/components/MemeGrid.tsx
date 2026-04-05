@@ -116,7 +116,7 @@ export default function MemeGrid({ memes }: MemeGridProps) {
           </PaginationItem>
         </PaginationContent>
       </Pagination>
-      
+
       <div className="grid auto-rows-fr grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {currentItems.map((meme) => (
           <div key={meme.id} className="h-fit">
@@ -176,7 +176,6 @@ export default function MemeGrid({ memes }: MemeGridProps) {
               <div className="relative flex flex-1 items-center justify-center bg-black/40">
                 <img
                   src={selectedMeme.image}
-                  alt={selectedMeme.title}
                   className="h-full max-h-[50vh] w-full object-contain md:max-h-[80vh]"
                 />
               </div>
@@ -197,34 +196,6 @@ export default function MemeGrid({ memes }: MemeGridProps) {
                       {selectedMeme.category}
                     </span>
                   </section>
-                  {selectedMeme.tags.length > 0 && (
-                    <section>
-                      <h4 className="mb-2 text-[11px] font-bold uppercase tracking-wider text-zinc-500">
-                        Tags
-                      </h4>
-                      <div className="flex flex-wrap gap-1.5">
-                        {selectedMeme.tags.map((tag) => (
-                          <span
-                            key={tag}
-                            className="text-xs text-zinc-400 hover:text-white cursor-default transition-colors"
-                          >
-                            #{tag}
-                          </span>
-                        ))}
-                      </div>
-                    </section>
-                  )}
-
-                  {selectedMeme.keywords.length > 0 && (
-                    <section className="border-t border-zinc-900 pt-4">
-                      <h4 className="mb-1.5 text-[11px] font-bold uppercase tracking-wider text-zinc-500">
-                        Keywords
-                      </h4>
-                      <p className="text-xs leading-relaxed text-zinc-400 line-clamp-3">
-                        {selectedMeme.keywords.join(", ")}
-                      </p>
-                    </section>
-                  )}
                 </div>
 
                 <div className="mt-auto pt-6">

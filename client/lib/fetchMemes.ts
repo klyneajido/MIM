@@ -1,13 +1,7 @@
-import "server-only";
-import { createClient } from "@supabase/supabase-js";
+import { supabase } from "./supabase";
 import { Meme } from "@/types/meme";
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ROLE_KEY!
-);
-
-export async function getMemes(): Promise<Meme[]> {
+export async function fetchMemes(): Promise<Meme[]> {
   const { data, error } = await supabase
     .from("memes")
     .select("*")
