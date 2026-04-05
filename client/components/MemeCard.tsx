@@ -52,7 +52,7 @@ export default function MemeCard({ meme, onOpen }: MemeCardProps) {
     >
       <div className="relative aspect-4/5 overflow-hidden bg-zinc-900">
         <Image
-          loading="lazy" 
+          loading="eager" 
           src={meme.image}
           alt={meme.category}
           fill

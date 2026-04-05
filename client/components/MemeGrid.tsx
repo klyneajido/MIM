@@ -170,7 +170,7 @@ export default function MemeGrid({ memes }: MemeGridProps) {
       </Pagination>
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="max-w-4xl overflow-hidden border-zinc-800 bg-zinc-950 p-0 text-white sm:rounded-lg">
+        <DialogContent className="max-w-4xl overflow-hidden border-zinc-800 bg-zinc-950 p-0 text-white sm:rounded-lg" aria-describedby="a meme">
           {selectedMeme && (
             <div className="flex flex-col md:flex-row">
               <div className="relative flex flex-1 items-center justify-center bg-black/40">
