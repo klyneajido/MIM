@@ -1,8 +1,6 @@
-// lib/memes.ts
+
 import { Meme } from "@/types/meme";
 import { getSupabaseClient } from "./supabase";
-
-
 export async function fetchMemes(): Promise<Meme[]> {
   const supabase = getSupabaseClient();
   const { data, error } = await supabase
